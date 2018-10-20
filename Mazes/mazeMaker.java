@@ -1,6 +1,6 @@
 package unit2_recursion.Mazes;
 
-import java.io.IOException;
+import java.io.*;
 
 public class mazeMaker {
 
@@ -9,14 +9,15 @@ public class mazeMaker {
     public static final int UP = 2;
     public static final int DOWN = 3;
 
-    public static final char s = '.';//'\u2591';
-    public static final char t = '#';//'\u2588';
+    public static final int mode = 2; // mode 1 for testing, 2 for aesthetics
+    public static char s;
+    public static char t;
 
     public static int ROW_START = 0;
     public static final int COL_START = 1;
 
-    public final static int rows = 13;
-    public final static int columns = 13;
+    public final static int rows = 41;
+    public final static int columns = 41;
 
     public static int move = 0;
 
@@ -27,13 +28,7 @@ public class mazeMaker {
         initialization();
     }
 
-    public static void starter () {
-
-        while (ROW_START == 0) {
-            int x = (int) (Math.random()*rows)-1;
-            if (x%2 == 1 && x > 1)
-                ROW_START = x;
-        }
+    public static void starter () throws Exception {
 
         generation(ROW_START, COL_START, (int) Math.round(Math.random()), 0);
 
@@ -47,6 +42,7 @@ public class mazeMaker {
                 changedStart = true;
             }
         }
+
         while (changedEnd == false) {
             int i = (int) (Math.random()*rows);
             if (maze[i][columns-2] == s) {
@@ -55,10 +51,13 @@ public class mazeMaker {
             }
         }
 
-        printMaze();
+        if (mode == 1)
+            writeMazeFile();
+        else
+            printMaze();
     }
 
-    public static boolean generation (int row, int column, int which, int howmuch) {
+    public static boolean generation (int row, int column, int which, int howmuch) throws IOException {
 
         move++;
 
@@ -70,13 +69,14 @@ public class mazeMaker {
 
         if (row == ROW_START && column == COL_START && move > 1) {
 
-            System.out.println("Maze finished");
+            // System.out.println("Maze finished");
             return false;
 
         } else{
 
 //            System.out.printf("Total moves: %d - press 'ENTER' to continue...\n", move);
 //            System.in.read();
+//            printMaze();
 
             while (!noMovesLeft(row, column)){
                 switch ((int) (Math.random()*4)) {
@@ -116,6 +116,18 @@ public class mazeMaker {
     }
 
     public static void initialization () {
+        while (ROW_START == 0) {
+            int x = (int) (Math.random()*rows)-1;
+            if (x%2 == 1 && x > 1)
+                ROW_START = x;
+        }
+        if (mode == 1){
+            s = '.';
+            t = '#';
+        } else {
+            s = '\u2591';
+            t = '\u2588';
+        }
         for (int i = 0; i < rows; i++){
             for (int j = 0; j < columns; j++){
                 maze[i][j] = t;
@@ -134,13 +146,29 @@ public class mazeMaker {
     public static void printMaze() {
         for (char[] row : maze) {
             for (char c : row) {
-                System.out.print(c);
+                System.out.printf("%c%c",c,c);
             }
             System.out.println();
         }
         System.out.println();
     }
 
+    public static void writeMazeFile() throws Exception {
+
+        //Getting the output stream of a file for writing
+        File file = new File("maze.txt");
+        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+        out.write(String.valueOf(rows));
+        out.newLine();
+        out.write(String.valueOf(columns));
+        out.newLine();
+        for (char[] row : maze) {
+            String st = new String(row);
+            out.write(st);
+            out.newLine();
+        }
+        out.close();
+    }
 }
 
 /*
@@ -148,4 +176,3 @@ BufferedWriter out = new BufferedWriter(new FileWriter(file));
 out.write("Write the string to text file");
 out.newLine();
  */
-

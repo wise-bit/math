@@ -13,7 +13,7 @@ public class Maze {
     public static final int UP = 2;
     public static final int DOWN = 3;
 
-    public static final int ROW_START = 4;
+    public static int ROW_START = 4;
     public static final int COL_START = 0;
 
     public static int rows = 0;
@@ -34,8 +34,11 @@ public class Maze {
 
             MAZE = new char[rows][columns];
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < rows; i++) {
                 MAZE[i] = input.next().toCharArray();
+                if (MAZE[i][0] == '.')
+                    ROW_START = i;
+            }
 
             input.close();
 
@@ -45,57 +48,60 @@ public class Maze {
 
     }
 
-    public static void traversal () throws IOException {
-        boolean traverse = mazeTraversal(ROW_START, COL_START);
+    public static int traversal () throws IOException {
+        boolean traverse = mazeTraversal(ROW_START, COL_START, move);
 
-        if (!traverse)
+        if (!traverse) {
             System.out.println("Maze has no solution! ");
-
+            return 0;
+        }
+        printMaze();
+        return move;
     }
 
-    public static boolean mazeTraversal (int row, int column) throws IOException {
+    public static boolean mazeTraversal (int row, int column, int move) throws IOException {
         // mazeTraversal
 
         MAZE[row][column] = 'x';
-        printMaze();
-        move++;
+//        printMaze();
+//        move++;
 
         if ((row == ROW_START && column == COL_START && move > 1)) {
             System.out.println("Moving to starting location");
             return false;
         } else if ((mazeExited(row, column) && move > 1)) {
-            System.out.println("Maze Successfully Exited");
-            System.exit(0);
-            return false;
+            // System.out.println("Maze Successfully Exited");
+            System.out.println(move);
+            return true;
         } else {
-            System.out.printf("Total moves: %d - press 'ENTER' to continue...\n", move);
-            System.in.read();
+//            System.out.printf("Total moves: %d - press 'ENTER' to continue...\n", move);
+//            System.in.read();
             for (int count = 0; count < 4; count++) {
                 switch (count) {
                     case LEFT:
                         if (validMove(row, column-1)) {
-                            if (mazeTraversal(row, column-1)) {
+                            if (mazeTraversal(row, column-1, move+1)) {
                                 return true;
                             }
                         }
                         break;
                     case RIGHT:
                         if (validMove(row, column+1)) {
-                            if (mazeTraversal(row, column+1)) {
+                            if (mazeTraversal(row, column+1, move+1)) {
                                 return true;
                             }
                         }
                         break;
                     case UP:
                         if (validMove(row - 1, column)) {
-                            if (mazeTraversal(row - 1, column)) {
+                            if (mazeTraversal(row - 1, column, move+1)) {
                                 return true;
                             }
                         }
                         break;
                     case DOWN:
                         if (validMove(row + 1, column)) {
-                            if (mazeTraversal(row + 1, column)) {
+                            if (mazeTraversal(row + 1, column, move+1)) {
                                 return true;
                             }
                         }
