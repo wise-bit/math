@@ -19,12 +19,26 @@ public class Maze {
     public static int rows = 0;
     public static int columns = 0;
 
+    public static final int mode = 2; // mode 1 for testing, 2 for aesthetics
+    public static char s;
+    public static char t;
+    public static char x;
+    
     public static int move;
 
     public static char[][] MAZE;
 
     public Maze(String filename) {
 
+        if (mode == 1){
+            s = '.';
+            t = '#';
+        } else {
+            s = '\u00A0';//'\u2591';
+            t = '\u2588';
+        }
+        x = '\u2592';
+        
         try {
 
             Scanner input = new Scanner (new File (filename));
@@ -36,7 +50,7 @@ public class Maze {
 
             for (int i = 0; i < rows; i++) {
                 MAZE[i] = input.next().toCharArray();
-                if (MAZE[i][0] == '.')
+                if (MAZE[i][0] == s)
                     ROW_START = i;
             }
 
@@ -62,7 +76,7 @@ public class Maze {
     public static boolean mazeTraversal (int row, int column, int move) throws IOException {
         // mazeTraversal
 
-        MAZE[row][column] = 'x';
+        MAZE[row][column] = x;
 //        printMaze();
 //        move++;
 
@@ -108,7 +122,10 @@ public class Maze {
                         break;
                 }
             }
-            MAZE[row][column] = '0';
+            if (mode == 1)
+                MAZE[row][column] = '0';
+            else
+                MAZE[row][column] = s;
         }
         return false;
     }
@@ -119,7 +136,7 @@ public class Maze {
 
     public static boolean validMove(int row, int column) {
         try {
-            return MAZE[row][column] == '.';
+            return MAZE[row][column] == s;
         } catch (Exception e) {
             return false;
         }
@@ -128,7 +145,10 @@ public class Maze {
     public static void printMaze() {
         for (char[] row : MAZE) {
             for (char c : row) {
-                System.out.print(c);
+                if (mode == 1)
+                    System.out.print(c);
+                else
+                    System.out.printf("%c%c",c,c);
             }
             System.out.println();
         }

@@ -16,8 +16,8 @@ public class mazeMaker {
     public static int ROW_START = 0;
     public static final int COL_START = 1;
 
-    public final static int rows = 41;
-    public final static int columns = 41;
+    public final static int rows = 31;
+    public final static int columns = 31;
 
     public static int move = 0;
 
@@ -54,6 +54,7 @@ public class mazeMaker {
         if (mode == 1)
             writeMazeFile();
         else
+            writeMazeFile();
             printMaze();
     }
 
@@ -125,7 +126,7 @@ public class mazeMaker {
             s = '.';
             t = '#';
         } else {
-            s = '\u2591';
+            s = '\u00A0';//'\u2591';
             t = '\u2588';
         }
         for (int i = 0; i < rows; i++){
