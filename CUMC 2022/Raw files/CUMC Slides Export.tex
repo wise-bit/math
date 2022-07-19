@@ -1,0 +1,493 @@
+\documentclass[handout]{beamer}
+\usepackage[utf8]{inputenc}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+\usetheme{metropolis}
+
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{epsfig}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+
+%------------------------------------------------------------
+%This block of code defines the information to appear in the
+%Title page
+\title[Functional Mathematical Analysis] %optional
+{A functional programming approach to mathematical analysis}
+
+\subtitle{Simplifying mathematical analysis}
+
+\author[Satrajit Chatterjee] % (optional)
+{Satrajit Chatterjee}
+
+\institute[VFU] % (optional)
+{
+    Computer Science and Mathematics\\
+    University of Ottawa
+}
+
+\date[VLC 2021] % (optional)
+{Canadian Undergraduate Mathematics Conference, July 2022}
+
+
+%End of title page configuration block
+%------------------------------------------------------------
+
+
+
+%------------------------------------------------------------
+%The next block of commands puts the table of contents at the
+%beginning of each section and highlights the current section:
+
+% \AtBeginSection[]
+%{
+%    \begin{frame}
+%        \frametitle{Table of Contents}
+%        \tableofcontents[currentsection]
+%    \end{frame}
+%}
+%------------------------------------------------------------
+
+
+\begin{document}
+
+    %The next statement creates the title page.
+    \frame{\titlepage}
+
+    \setbeamertemplate{frame footer}{\tiny\insertdate{} -- \insertshortauthor{} -- \insertshorttitle}
+
+    %---------------------------------------------------------
+    %This block of code is for the table of contents after
+    %the title page
+    %\begin{frame}
+    %    \frametitle{Table of Contents}
+    %    \tableofcontents
+    %\end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[t]
+        \frametitle{Why are we here}
+
+        \sout{To learn functional programming!}
+
+        \vspace{20px}
+
+        jk, uOttawa had to make paradigms a part of my sequence to get me to care about that. \pause
+
+        \vspace{10px}
+
+        But then it got interesting, so who knows, you might like it too.
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    \begin{frame}
+        \frametitle{Why I care about this, and why you might}
+
+        \begin{itemize}
+            \item<1-> I'm a CS Student.
+            \item<2-> Real Analysis was hard.
+            \item<3-> I want it to be not hard.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{So what are paradigms}
+
+        Programming language classification based on their features. \pause
+
+        Some of the popular ones: \pause
+
+        \begin{itemize}
+            \item<3-> Imperative $\rightarrow$ Tell a computer how to do something
+            \item<4-> Declarative $\rightarrow$ Tell a computer what to do
+            \item<5-> Object-oriented
+            \item<6-> Logical
+            \item<7-> Functional
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Object Oriented Programming}
+        \scriptsize
+        \begin{verbatim}
+            public class Car {
+                String name;
+                public static Planet (String s) {
+                    this.name = s;
+                }
+            }
+
+            public class Main {
+                public static void main(String[] args) {
+                    String s = "Uranus";
+                    Planet p = new Planet();
+                    System.out.println(p.name);
+                }
+            }
+        \end{verbatim}
+    \end{frame}
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{\ \ }
+
+        \begin{verbatim}
+            p.name = "Pluto";
+        \end{verbatim}
+
+        \begin{itemize}
+            \item<2-> You're allowed to do this.
+            \item<3-> Pluto is now officially a planet!
+            \item<4-> You did what NASA couldn't!!
+        \end{itemize}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Logic Programming}
+
+        \textbf{Prolog}
+
+        \begin{itemize}
+            \item Atoms
+            \item Predicates
+        \end{itemize}
+
+        \begin{verbatim}
+            planet(earth).
+            animal(mars).
+            planet(venus).
+            planet(venus).
+            neighbors(earth, mars).
+            neighbors(earth, venus).
+            % Find all neighbors of earth
+            neighbors(earth, X).
+        \end{verbatim}
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Logic Programming}
+
+        \begin{itemize}
+            \item<1-> Propositional Logic
+            \item<2-> Discrete Math
+            \item<3-> Solving the Knapsack problem if you're familiar with it
+            \item<4-> Natural Language Processing somehow, I never managed to get around to trying it out.
+        \end{itemize}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Finally, Functional Programming}
+
+        \begin{itemize}
+            \item<1-> The exact opposite of imperative programming (where you change the state of something)
+            \item<2-> Everything is a function. And there's some "variables".
+            \item<3-> Immutable values.
+            \item<4-> And apparently quite useful in math. We'll find out more in a second!
+        \end{itemize}
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{OCaml}
+        \scriptsize
+        \begin{verbatim}
+            type planet = {name: string; isplanet: bool} ;;
+            let pluto : planet = { name = "pluto"; isplanet = false } ;;
+
+            (* Will only output false *)
+            pluto.isplanet = true ;;
+        \end{verbatim} \pause
+        Cannot save Pluto from it's doom as a non-planet anymore :( \pause
+
+        But that's okay! We have more important things to worry about.
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{So how is Domain Specific Languages different?}
+
+        \begin{itemize}
+            \item<1-> Opposite to General Purpose Languages
+            \item<2-> Language specific to a... domain
+            \item<3-> We can treat Haskell and OCaml as a DSL for now... even though its not.
+            \item<4-> No ideal Domain Specific Language for math at the moment, but that's something worth looking into.
+        \end{itemize}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{So how is Domain Specific Languages different?}
+
+        You might've heard of:
+        \begin{itemize}
+            \item<1-> HTML
+            \item<2-> CSS
+            \item<3-> SQL
+        \end{itemize}
+
+        \pause\pause\pause
+        \begin{center}
+            \textbf{Fun Fact}
+
+            HTML + CSS is Turing complete.
+        \end{center}
+    \end{frame}
+
+    %---------------------------------------------------------
+
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{So what now}
+
+        You might be wondering, where is all the math... \pause
+
+        Well we're here!
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Types}
+
+        \begin{itemize}
+            \item A lot of functional programming depends on user defined data types.
+            \item Use this to our advantage to apply it to math.
+            \item<2-> You must've heard of complex numbers...
+            \item<3-> Most regular programming languages haven't heard of them.
+            \item<4-> So let's teach it to 'em!
+        \end{itemize}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Types}
+
+        A complex number has the form $a + bi$ or $a + ib$.
+
+        This can have an abstract functional representation as a datatype:
+
+        data Complex = $Plus_1\ \R\ \R\ I$\\
+        \quad \quad \quad \quad \quad \quad \quad $| Plus_2\ \R I\ \R$
+
+        \vspace{10px}
+
+        If we account for the fact that complex numbers are isomorphic to pairs of real numbers, we can define it in terms of a new data type:
+
+        newtype Complex = $C (\R, \R)$
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Types}
+
+        We can define addition and subtraction operations on complex numbers as
+        $$w + z = (a + x) + (b + y) i$$
+        \vspace{-20px}
+        $$w - z = (a - x) + (b - y) i$$
+
+        From a functional perspective,
+        \begin{verbatim}
+            (+) : Complex -> Complex -> Complex
+            (C (a, b)) + (C (x, y)) = C ((a + x), (b + y))
+        \end{verbatim}
+
+        \vspace{-10px}
+
+        We can turn this into a functional datatype
+        \scriptsize
+        \begin{verbatim}
+            data ComplexSyntax = i
+                | ToComplex R
+                | Plus ComplexSyntax ComplexSyntax
+                | Times ComplexSyntax ComplexSyntax
+                | ...
+        \end{verbatim}
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Welcome to Pattern Matching}
+
+        \begin{verbatim}
+            let is_empty = function
+              | [] -> true
+              | _ :: _ -> false
+            ;;
+        \end{verbatim}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Types}
+        \textbf{Haskell}
+        \vspace{-10px}
+        \scriptsize
+        \begin{verbatim}
+            class Monoid m where
+                mempty :: m
+                mappend :: m -> m -> m
+                mconcat :: [m] -> m
+                mconcat = foldr mappend mempty
+
+            multi:: Int->Int
+            multi x = x * 1
+            add :: Int->Int
+            add x = x + 0
+
+            main = do
+                print(multi 9)
+                print (add 7)
+        \end{verbatim}
+        \vspace{-10px}
+        Recap: Monoid $\rightarrow\ Ia = aI = a$ \\
+        Closed under an associative binary operation and has an identity element.
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Lets bring it back to math}
+
+        Every natural number is even or odd.
+
+        With the base case that 0 is even or 0 is odd, we can use an inductive property where n is even or n is odd, $n \in \N$.
+
+        \scriptsize
+        \begin{verbatim}
+            datatype evenodd = Even | Odd;
+
+            fun test 0 = Even
+              | test n = (case test (n-1) of Even => Odd
+                                           | Odd => Even);
+        \end{verbatim}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Example in Analysis}
+
+        \textbf{Completeness property}: if A is a set of real numbers with at least one number in it, there exists a real number $y$ such that $x \leq y$ for every $x \in A$ (upper bound) and a smallest such number (least upper bound or \textbf{supremum} of A).
+
+        Functionally representing sup which is defined only for those subsets of $\R$ which are bounded from above,
+
+        $sup: \mathcal{P}^+ \R \rightarrow \R$ \pause
+
+        \vspace{10px}
+
+        $min: \mathcal{P}^+ \R \rightarrow \R$\\
+        $min\ A = x \Longleftrightarrow  (x \in A) \land (\forall a \in A : x \leq a)$
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Example in Analysis}
+
+        Because sup A is similar to max A but is also the smallest element of a set, there is a connection to min. We can introduce the function:
+
+        $ubs: \mathcal{P}\R \rightarrow \mathcal{P}\R$\\
+        $ubs\ A = \{x | x \in \R, x \text{ upper bound of } A\}$
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{Example in Analysis - modularizing the problem}
+
+        Because sup A is similar to max A but is also the smallest element of a set, there is a connection to min. We can define the function:
+
+        $ubs: \mathcal{P}\R \rightarrow \mathcal{P}\R$\\
+        $ubs\ A = \{x | x \in \R, \forall a \in A : a \leq x\}$
+
+        \rule{\textwidth}{0.5mm}
+
+        This function returns the upper bounds on A. The completeness axiom can now be stated as:
+
+        Assume an $A: \mathcal{P}^+\R$ with an upper bound $u \in ubs(A)$
+        Then $s = sup\ A = min(ubs(A))$ exists.
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}[fragile]
+        \frametitle{Lambda Functions}
+
+        Anonymous functions that are either one time use or can be passed as a parameter.
+
+        \begin{verbatim}
+            (\x y -> x + y) 3 5
+            8 :: Integer
+        \end{verbatim}
+
+        A more practical programming application:
+
+        \begin{verbatim}
+            addOneList lst = map addOne' lst
+                where addOne' x = x + 1
+        \end{verbatim}
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \frametitle{But...}
+
+        \begin{center}
+            Is this easier to implement than simply writing a proof by hand? \pause
+
+            no ;-; for the most part
+
+            \vspace{20px}
+
+            but it does help modularize and simplify problems in analysis.
+        \end{center}
+
+    \end{frame}
+    %---------------------------------------------------------
+
+    %---------------------------------------------------------
+    \begin{frame}
+        \begin{center}
+            \large do you have any questions? Me too! ;-;
+
+            you can reach me at \textbf{satrajit314@gmail.com}
+
+        \end{center}
+    \end{frame}
+    %---------------------------------------------------------
+
+
+\end{document}

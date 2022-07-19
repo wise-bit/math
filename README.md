@@ -1,5 +1,8 @@
-# mathematicalModels
-Mazes, fractals, etc
+# Math Stuff
 
+Currently includes:
 
-This repository includes mathematical programming challenges like mazes and fractals, and my approaches to them. 
+- Canadian Undergraduate Mathematics Conference 2022
+  - A functional programming approach to mathematical analysis 
+- Fractals
+- Mazes
